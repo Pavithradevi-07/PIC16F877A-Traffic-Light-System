@@ -1,0 +1,104 @@
+#include <pic.h>
+#define sw1 RD4
+#define sw2 RD5
+#define sw3 RD6
+#define sw4 RD7
+
+
+#define seg PORTB // 7-segment display
+
+
+void delay();
+void count(char a);
+void traffic_signal_1();
+void traffic_signal_2();
+void traffic_signal_3();
+void traffic_signal_4();
+void check();
+
+void main() {
+    TRISB = 0x00; // Set PORTB as output (7-segment)
+    TRISC = 0x00; // Set PORTC as output (Traffic Light)
+    TRISD = 0xF0; // Set PORTD as output (Pedestrian Light)
+
+    PORTB = 0x00;
+    PORTC = 0x00;
+    PORTD = 0x00;
+   
+       while(1)
+       {
+    traffic_signal_1();
+    traffic_signal_2();
+    traffic_signal_3();
+    traffic_signal_4();
+
+}
+}
+
+
+void delay() {
+    int i, j;
+    for (i = 0; i <= 250; i++) {
+        for (j = 0; j <= 350; j++);
+    }
+}
+
+void count(char a) {
+    char arr[10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F}; // 7-segment display values
+
+    int j;
+    for (j = a; j >= 0; j--) {
+        seg = arr[j]; // Display number
+        check();
+        delay();
+     
+    }
+}
+
+void traffic_signal_1() {
+
+         
+            PORTC=0x09;
+            PORTD=0x03;
+             count(9);
+            PORTC=0x99;
+            PORTD=0x03;
+            count(4);
+}          
+        void traffic_signal_2() {
+           
+            PORTC=0x61;
+            PORTD=0x02;
+            count(9);
+            PORTC=0x73;
+            PORTD=0x02;
+            count(4);
+        }  
+            void traffic_signal_3() {
+               
+           
+            PORTC=0x4c;
+            PORTD=0x02;
+            count(9);
+            PORTC=0x4e;
+            PORTD=0x06;
+            count(4);
+            }
+            void traffic_signal_4() {
+           
+   
+           
+            PORTC=0x49;
+            PORTD=0x08;
+            count(9);
+            PORTC=0xc9;
+            PORTD=0x0c;
+            count(4);
+    }
+    void check()
+    {
+    if(sw1==1){delay(); traffic_signal_1();}
+    if(sw2==1){delay(); traffic_signal_2();}
+    if(sw3==1){delay(); traffic_signal_3();}
+    if(sw4==1){delay(); traffic_signal_4();}
+    }
